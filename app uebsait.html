@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trova il pacchetto perfetto per il tuo progetto</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+            color: #495057;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #000;
+        }
+
+        .header p {
+            font-size: 1.25rem;
+            color: #6c757d;
+            max-width: 42rem;
+            margin: 0 auto;
+        }
+
+        .progress-bar {
+            max-width: 28rem;
+            margin: 0 auto 2rem;
+        }
+
+        .progress-steps {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .progress-step {
+            flex: 1;
+            height: 0.625rem;
+            background: #e9ecef;
+            border-radius: 1rem;
+            transition: background 0.3s;
+        }
+
+        .progress-step.active {
+            background: #000;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 0.875rem;
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card-header {
+            margin-bottom: 2rem;
+        }
+
+        .card-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #000;
+        }
+
+        .card-description {
+            font-size: 1rem;
+            color: #6c757d;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            border: 2px solid #dee2e6;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-label:hover {
+            border-color: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .option-label.selected {
+            border-color: #000;
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .option-radio {
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid #dee2e6;
+            border-radius: 50%;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .option-label.selected .option-radio {
+            border-color: #000;
+        }
+
+        .option-label.selected .option-radio::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0.625rem;
+            height: 0.625rem;
+            background: #000;
+            border-radius: 50%;
+        }
+
+        .option-content {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex: 1;
+        }
+
+        .option-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            color: #000;
+        }
+
+        .option-text {
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: #000;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            font-family: inherit;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: #000;
+            color: white;
+            min-width: 8rem;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            opacity: 0.9;
+        }
+
+        .btn-outline {
+            background: white;
+            color: #000;
+            border: 2px solid #dee2e6;
+        }
+
+        .btn-outline:hover {
+            background: #f8f9fa;
+        }
+
+        .btn-full {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.125rem;
+        }
+
+        .recommendation-card {
+            background: linear-gradient(135deg, white, rgba(0, 0, 0, 0.03));
+            border: 2px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background: #000;
+            color: white;
+            border-radius: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .recommendation-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .recommendation-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 1rem 0;
+        }
+
+        .recommendation-subtitle {
+            font-size: 1.25rem;
+            color: #6c757d;
+        }
+
+        .package-icon {
+            width: 5rem;
+            height: 5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .price {
+            font-size: 3.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .price-subtitle {
+            text-align: center;
+            color: #6c757d;
+            margin-bottom: 2rem;
+        }
+
+        .features-box {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .features-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            color: #28a745;
+            flex-shrink: 0;
+            margin-top: 0.125rem;
+        }
+
+        .info-box {
+            background: rgba(0, 0, 0, 0.03);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            font-size: 0.875rem;
+        }
+
+        .info-label {
+            font-weight: 500;
+        }
+
+        .info-value {
+            color: #6c757d;
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .package-card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 1.5rem;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .package-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .package-card.recommended {
+            border: 2px solid #000;
+        }
+
+        .package-badge {
+            position: absolute;
+            top: -0.75rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #9333ea;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .package-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .package-icon-small {
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.75rem;
+            color: white;
+        }
+
+        .package-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .package-description {
+            font-size: 0.875rem;
+            color: #6c757d;
+            margin-bottom: 1rem;
+        }
+
+        .package-price {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-top: 0.75rem;
+        }
+
+        .package-features {
+            min-height: 180px;
+            margin-bottom: 1.5rem;
+        }
+
+        .package-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.75rem;
+            color: #6c757d;
+        }
+
+        .package-feature-icon {
+            width: 1rem;
+            height: 1rem;
+            color: #28a745;
+            flex-shrink: 0;
+            margin-top: 0.125rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 4rem 0 2rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .card-title {
+                font-size: 1.5rem;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            .recommendation-title {
+                font-size: 2rem;
+            }
+
+            .price {
+                font-size: 2.5rem;
+            }
+
+            .packages-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Trova il pacchetto perfetto per il tuo progetto</h1>
+            <p>Rispondi a 3 semplici domande e ti consiglieremo la soluzione ideale per le tue esigenze</p>
+        </div>
+
+        <div id="progressBar" class="progress-bar">
+            <div class="progress-steps">
+                <div class="progress-step active" id="progress1"></div>
+                <div class="progress-step" id="progress2"></div>
+                <div class="progress-step" id="progress3"></div>
+            </div>
+            <p class="progress-text">Domanda <span id="currentStep">1</span> di 3</p>
+        </div>
+
+        <!-- Step 1: Business Type -->
+        <div id="step1" class="card">
+            <div class="card-header">
+                <h2 class="card-title">Che tipo di attività hai?</h2>
+                <p class="card-description">Seleziona la categoria che meglio descrive il tuo business</p>
+            </div>
+            <div class="options-grid" id="businessTypeOptions"></div>
+            <div class="buttons">
+                <div></div>
+                <button class="btn btn-primary" onclick="goToStep(2)" id="step1Next" disabled>Continua →</button>
+            </div>
+        </div>
+
+        <!-- Step 2: Website Goal -->
+        <div id="step2" class="card hidden">
+            <div class="card-header">
+                <h2 class="card-title">Qual è il tuo obiettivo principale?</h2>
+                <p class="card-description">Cosa vuoi ottenere con il tuo sito web?</p>
+            </div>
+            <div class="options-list" id="websiteGoalOptions"></div>
+            <div class="buttons">
+                <button class="btn btn-outline" onclick="goToStep(1)">← Indietro</button>
+                <button class="btn btn-primary" onclick="goToStep(3)" id="step2Next" disabled>Continua →</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Website Needs -->
+        <div id="step3" class="card hidden">
+            <div class="card-header">
+                <h2 class="card-title">Di cosa hai bisogno?</h2>
+                <p class="card-description">Seleziona il tipo di sito che corrisponde alle tue necessità</p>
+            </div>
+            <div class="options-list" id="websiteNeedOptions"></div>
+            <div class="buttons">
+                <button class="btn btn-outline" onclick="goToStep(2)">← Indietro</button>
+                <button class="btn btn-primary" onclick="showRecommendation()" id="step3Next" disabled>Mostra risultato ✨</button>
+            </div>
+        </div>
+
+        <!-- Step 4: Recommendation -->
+        <div id="step4" class="hidden">
+            <div class="card recommendation-card">
+                <div class="recommendation-header">
+                    <span class="badge">✨ Consigliato per te</span>
+                    <h2 class="recommendation-title" id="recommendedName"></h2>
+                    <p class="recommendation-subtitle" id="recommendedDescription"></p>
+                </div>
+
+                <div id="recommendedIcon"></div>
+                <div class="price" id="recommendedPrice"></div>
+                <p class="price-subtitle">Pagamento unico</p>
+
+                <div class="features-box">
+                    <h4 class="features-title">
+                        <svg class="feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Cosa include:
+                    </h4>
+                    <div id="recommendedFeatures"></div>
+                </div>
+
+                <div class="info-box" id="recommendedInfo"></div>
+
+                <button class="btn btn-primary btn-full" style="margin-bottom: 0.75rem;">
+                    Richiedi preventivo gratuito
+                </button>
+                <button class="btn btn-outline btn-full" onclick="resetClassifier()">
+                    ↻ Ricomincia il test
+                </button>
+            </div>
+
+            <h3 class="section-title">Tutti i pacchetti disponibili</h3>
+            <div class="packages-grid" id="allPackages"></div>
+        </div>
+    </div>
+
+    <script>
+        // Data
+        const packages = [
+            {
+                id: 'base',
+                name: 'Base',
+                description: 'Accresci il tuo bacino clienti',
+                price: '$499',
+                features: [
+                    'Fino a 5 pagine (es. Home, Servizi, Chi siamo, Contatti)',
+                    'Design personalizzato su template predefinito',
+                    'Responsive design (mobile e tablet)',
+                    'Hosting incluso',
+                    'Certificato SSL',
+                    'Indicizzazione base su Google (SEO base)'
+                ],
+                color: '#3b82f6',
+                delivery: '5–7 giorni'
+            },
+            {
+                id: 'professionale',
+                name: 'Professionale',
+                description: 'Struttura il tuo business',
+                price: '$799',
+                features: [
+                    'Fino a 10 pagine personalizzate',
+                    'Design completamente su misura',
+                    'Animazioni e interazioni base (scroll, hover)',
+                    'Responsive design avanzato',
+                    'Integrazione con strumenti esterni (es. Calendly, Mailchimp)',
+                    'Fino a 3 form (es. contatto, preventivo, iscrizione newsletter)',
+                    'SEO ottimizzato + struttura semantica'
+                ],
+                color: '#a855f7',
+                delivery: '7–10 giorni lavorativi',
+                support: 'Supporto 15 giorni post consegna',
+                badge: 'Più scelto'
+            },
+            {
+                id: 'premium',
+                name: 'Premium',
+                description: 'Crea una cash-machine',
+                price: '$1,499',
+                features: [
+                    'Fino a 20 pagine',
+                    'Design esclusivo & strategico con ricerca UX/UI',
+                    'Strategia SEO avanzata',
+                    'CMS Webflow incluso',
+                    'Integrazioni avanzate',
+                    'Form personalizzati con logica condizionale'
+                ],
+                color: '#f59e0b',
+                delivery: '10–15 giorni',
+                support: 'Supporto premium 30 giorni e consulenza strategica'
+            }
+        ];
+
+        const businessTypes = [
+            { id: 'freelance', name: 'Freelance / Professionista', recommendedPackage: 'base' },
+            { id: 'retail', name: 'Negozio / E-commerce', recommendedPackage: 'professionale' },
+            { id: 'restaurant', name: 'Ristorante / Bar / Hotel', recommendedPackage: 'professionale' },
+            { id: 'services', name: 'Servizi professionali (Avvocati, Consulenti)', recommendedPackage: 'professionale' },
+            { id: 'health', name: 'Salute e benessere (Palestre, Centri estetici)', recommendedPackage: 'professionale' },
+            { id: 'creative', name: 'Creativi (Fotografi, Designer, Artisti)', recommendedPackage: 'base' },
+            { id: 'education', name: 'Formazione / Corsi online', recommendedPackage: 'professionale' },
+            { id: 'tech', name: 'Tecnologia / Software / Startup', recommendedPackage: 'premium' },
+            { id: 'realestate', name: 'Immobiliare / Agenzie', recommendedPackage: 'professionale' },
+            { id: 'corporate', name: 'Azienda strutturata', recommendedPackage: 'premium' }
+        ];
+
+        const websiteGoals = [
+            { id: 'presence', name: 'Avere una presenza online professionale', weight: 'base' },
+            { id: 'leads', name: 'Generare contatti e lead qualificati', weight: 'professionale' },
+            { id: 'sales', name: 'Vendere prodotti/servizi online', weight: 'professionale' },
+            { id: 'brand', name: 'Costruire un brand forte e riconoscibile', weight: 'premium' },
+            { id: 'scale', name: 'Scalare il business e automatizzare', weight: 'premium' }
+        ];
+
+        const websiteNeeds = [
+            { id: 'simple', name: 'Sito vetrina semplice (poche pagine)', weight: 'base' },
+            { id: 'medium', name: 'Sito con più sezioni e contenuti', weight: 'professionale' },
+            { id: 'complex', name: 'Sito complesso con molte funzionalità', weight: 'premium' },
+            { id: 'ecommerce', name: 'E-commerce o catalogo prodotti', weight: 'professionale' },
+            { id: 'custom', name: 'Soluzioni personalizzate e integrazioni avanzate', weight: 'premium' }
+        ];
+
+        // State
+        let state = {
+            step: 1,
+            businessType: '',
+            websiteGoal: '',
+            websiteNeed: '',
+            recommendedPackage: null
+        };
+
+        // Initialize
+        function init() {
+            renderBusinessTypes();
+            renderWebsiteGoals();
+            renderWebsiteNeeds();
+        }
+
+        function renderBusinessTypes() {
+            const container = document.getElementById('businessTypeOptions');
+            container.innerHTML = businessTypes.map(type => `
+                <label class="option-label" onclick="selectOption('businessType', '${type.id}')">
+                    <div class="option-radio"></div>
+                    <div class="option-content">
+                        <span class="option-text">${type.name}</span>
+                    </div>
+                </label>
+            `).join('');
+        }
+
+        function renderWebsiteGoals() {
+            const container = document.getElementById('websiteGoalOptions');
+            container.innerHTML = websiteGoals.map(goal => `
+                <label class="option-label" onclick="selectOption('websiteGoal', '${goal.id}')">
+                    <div class="option-radio"></div>
+                    <span class="option-text">${goal.name}</span>
+                </label>
+            `).join('');
+        }
+
+        function renderWebsiteNeeds() {
+            const container = document.getElementById('websiteNeedOptions');
+            container.innerHTML = websiteNeeds.map(need => `
+                <label class="option-label" onclick="selectOption('websiteNeed', '${need.id}')">
+                    <div class="option-radio"></div>
+                    <span class="option-text">${need.name}</span>
+                </label>
+            `).join('');
+        }
+
+        function selectOption(type, value) {
+            state[type] = value;
+            
+            // Update UI
+            const container = type === 'businessType' ? 'businessTypeOptions' : 
+                            type === 'websiteGoal' ? 'websiteGoalOptions' : 'websiteNeedOptions';
+            const labels = document.querySelectorAll(`#${container} .option-label`);
+            labels.forEach(label => label.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+
+            // Enable next button
+            const step = type === 'businessType' ? 1 : type === 'websiteGoal' ? 2 : 3;
+            document.getElementById(`step${step}Next`).disabled = false;
+        }
+
+        function goToStep(step) {
+            // Hide all steps
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`step${i}`).classList.add('hidden');
+            }
+
+            // Show current step
+            document.getElementById(`step${step}`).classList.remove('hidden');
+
+            // Update progress
+            state.step = step;
+            document.getElementById('currentStep').textContent = step;
+            for (let i = 1; i <= 3; i++) {
+                const progressStep = document.getElementById(`progress${i}`);
+                if (i <= step) {
+                    progressStep.classList.add('active');
+                } else {
+                    progressStep.classList.remove('active');
+                }
+            }
+
+            // Show/hide progress bar
+            document.getElementById('progressBar').classList.toggle('hidden', step === 4);
+        }
+
+        function showRecommendation() {
+            const scores = { base: 0, professionale: 0, premium: 0 };
+
+            // Calculate scores
+            const business = businessTypes.find(b => b.id === state.businessType);
+            if (business) scores[business.recommendedPackage] += 3;
+
+            const goal = websiteGoals.find(g => g.id === state.websiteGoal);
+            if (goal) scores[goal.weight] += 2;
+
+            const need = websiteNeeds.find(n => n.id === state.websiteNeed);
+            if (need) scores[need.weight] += 2;
+
+            // Find recommended package
+            const recommendedId = Object.keys(scores).reduce((a, b) => 
+                scores[a] > scores[b] ? a : b
+            );
+
+            state.recommendedPackage = packages.find(p => p.id === recommendedId);
+
+            // Render recommendation
+            renderRecommendation();
+            goToStep(4);
+        }
+
+        function renderRecommendation() {
+            const pkg = state.recommendedPackage;
+            
+            document.getElementById('recommendedName').textContent = pkg.name;
+            document.getElementById('recommendedDescription').textContent = pkg.description;
+            document.getElementById('recommendedPrice').textContent = pkg.price;
+
+            document.getElementById('recommendedIcon').innerHTML = `
+                <div class="package-icon" style="background: ${pkg.color};">
+                    <svg width="40" height="40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                </div>
+            `;
+
+            document.getElementById('recommendedFeatures').innerHTML = pkg.features.map(feature => `
+                <div class="feature-item">
+                    <svg class="feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span>${feature}</span>
+                </div>
+            `).join('');
+
+            document.getElementById('recommendedInfo').innerHTML = `
+                <div class="info-row">
+                    <span class="info-label">⏱️ Tempi di consegna:</span>
+                    <span class="info-value">${pkg.delivery}</span>
+                </div>
+                ${pkg.support ? `
+                <div class="info-row">
+                    <span class="info-label">🛟 Supporto:</span>
+                    <span class="info-value">${pkg.support}</span>
+                </div>
+                ` : ''}
+            `;
+
+            // Render all packages
+            document.getElementById('allPackages').innerHTML = packages.map(p => `
+                <div class="package-card ${p.id === pkg.id ? 'recommended' : ''}">
+                    ${p.badge ? `<div class="package-badge">${p.badge}</div>` : ''}
+                    <div class="package-header">
+                        <div class="package-icon-small" style="background: ${p.color};">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="package-name">${p.name}</h3>
+                        <p class="package-description">${p.description}</p>
+                        <p class="package-price">${p.price}</p>
+                    </div>
+                    <div class="package-features">
+                        ${p.features.slice(0, 4).map(f => `
+                            <div class="package-feature">
+                                <svg class="package-feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span>${f}</span>
+                            </div>
+                        `).join('')}
+                        ${p.features.length > 4 ? `<p style="font-size: 0.75rem; color: #6c757d; font-style: italic; margin-top: 0.5rem;">+ altri ${p.features.length - 4} vantaggi</p>` : ''}
+                    </div>
+                    <button class="btn ${p.id === pkg.id ? 'btn-primary' : 'btn-outline'} btn-full">
+                        ${p.id === pkg.id ? 'Scegli questo' : 'Scopri di più'}
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function resetClassifier() {
+            state = {
+                step: 1,
+                businessType: '',
+                websiteGoal: '',
+                websiteNeed: '',
+                recommendedPackage: null
+            };
+
+            // Reset all selections
+            document.querySelectorAll('.option-label').forEach(label => {
+                label.classList.remove('selected');
+            });
+
+            // Disable all next buttons
+            document.getElementById('step1Next').disabled = true;
+            document.getElementById('step2Next').disabled = true;
+            document.getElementById('step3Next').disabled = true;
+
+            goToStep(1);
+        }
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>
