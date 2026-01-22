@@ -831,9 +831,12 @@
                         `).join('')}
                         ${p.features.length > 4 ? `<p style="font-size: 0.75rem; color: #6c757d; font-style: italic; margin-top: 0.5rem;">+ altri ${p.features.length - 4} vantaggi</p>` : ''}
                     </div>
-                    <button class="btn ${p.id === pkg.id ? 'btn-primary' : 'btn-outline'} btn-full">
-                        ${p.id === pkg.id ? 'Scegli questo' : 'Scopri di più'}
+                    ${p.id === pkg.id ? `
+                    <button class="btn btn-primary btn-full">
+                    Scegli questo
                     </button>
+                    ` : ''}
+
                 </div>
             `).join('');
         }
@@ -866,6 +869,7 @@
 </body>
 
 </html>
+
 
 
 
